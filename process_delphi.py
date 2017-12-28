@@ -30,8 +30,9 @@ def makechart(self, title, pos, width, height, col1, row1, col2, row2, col3, row
     chart.set_categories(cat)  
     self.ws.add_chart(chart, pos)  
     self.wb.save(self.filename)  
-
+#get current directory 
 currentDir=os.getcwd()
+#get filelist from the current directory
 fileList=os.listdir(currentDir)
 print(fileList)
 """
@@ -45,10 +46,11 @@ table_cnt = 0
 ws_col = 4
 
 for fileName in fileList:
+    
     sheetName=fileName.split('.')
-    #print(peformanceSheet)
+    #get the source table with a suffix of specialist name 
     if sheetName[1] == 'xlsx' and '研制任务书需求分析调查表' in sheetName[0]:
-        if table_cnt==0:
+        if table_cnt==0:#get the first source table ?
             getNameArray=sheetName[0].split('-')
             print(getNameArray)
             tableOpen=openpyxl.load_workbook(str(currentDir+'\\'+fileName),data_only=True)
@@ -56,7 +58,7 @@ for fileName in fileList:
             curSheet_delphi=tableOpen.worksheets[0]
             print(curSheet_delphi.title)
             table_cnt+=1
-            
+            #create new table
             wb = Workbook()
             ws1 = wb.create_sheet(0)
             ws1.title = u'功能匹配度'
@@ -123,32 +125,34 @@ for fileName in fileList:
                 else:
                     ws1.cell(row=ws_line,column=ws_col).value = curSheet_delphi.cell(row= row_line, column=5).value
                     #print(curSheet_delphi.cell(row= row_line, column=5).value,ws1.cell(row=ws_line,column=ws_col).value, 3)
-                    
+                #开发难度    
                 ws2.cell(row=ws_line,column=1).value = curSheet_delphi.cell(row= row_line, column=1).value
                 ws2.cell(row=ws_line,column=2).value = curSheet_delphi.cell(row= row_line, column=2).value
                 ws2.cell(row=ws_line,column=3).value = curSheet_delphi.cell(row= row_line, column=3).value
                 ws2.cell(row=ws_line,column=ws_col).value = curSheet_delphi.cell(row= row_line, column=7).value
-                    
+                #开发工作量    
                 ws3.cell(row=ws_line,column=1).value = curSheet_delphi.cell(row= row_line, column=1).value
                 ws3.cell(row=ws_line,column=2).value = curSheet_delphi.cell(row= row_line, column=2).value
                 ws3.cell(row=ws_line,column=3).value = curSheet_delphi.cell(row= row_line, column=3).value
                 ws3.cell(row=ws_line,column=ws_col).value = curSheet_delphi.cell(row= row_line, column=8).value
-                    
+                #最显著差异    
                 ws4.cell(row=ws_line,column=1).value = curSheet_delphi.cell(row= row_line, column=1).value
                 ws4.cell(row=ws_line,column=2).value = curSheet_delphi.cell(row= row_line, column=2).value
                 ws4.cell(row=ws_line,column=3).value = curSheet_delphi.cell(row= row_line, column=3).value
                 ws4.cell(row=ws_line,column=ws_col).value = curSheet_delphi.cell(row= row_line, column=6).value
                     
-                if curSheet_delphi.cell(row= row_line, column=2).value == curSheet_delphi.cell(row= row_line+1, column=2).value:
+                if curSheet_delphi.cell(row= row_line, column=2).value == curSheet_delphi.cell(row= row_line+1, column=2).value:#same item？
                     ws_line+=1
                    # print(str(currentDir+'\\delphi\\'+tableName))
                 else:
+                    #save the  current item table  for delphi
                     tableName=curSheet_delphi.cell(row= row_line, column=2).value
                     #print(str(currentDir+'\\delphi\\'+tableName))
                     #wb.save(filename=str(currentDir+'\\delphi\\'+tableName)) 
                     wb.remove_sheet(wb.get_sheet_by_name('Sheet'))
                     #wb.remove_sheet(    )
                     wb.save(filename=str(currentDir+'\\'+tableName+'.xlsx')) 
+                    #create 
                     wb = Workbook()
                     ws1 = wb.create_sheet(0)
                     ws1.title = u'功能匹配度'
@@ -287,48 +291,3 @@ for fileName in fileList:
         
         
 print(table_cnt)        
-"""            
-
-
-ft = Font(bold=True)
-
-fingerSheet['G1']= '请假开始时间'
-fingerSheet['G1'].font=ft
-
-fingerSheet['H1']= '请假结束时间'
-fingerSheet['H1'].font=ft
-
-fingerSheet['I1']= '请假类型'
-fingerSheet['I1'].font=ft
-
-fingerSheet['J1']= '请假原因'
-fingerSheet['J1'].font=ft
-
-fingerSheet['K1']= '出差开始时间'
-fingerSheet['K1'].font=ft
-
-fingerSheet['L1']= '出差结束时间'
-fingerSheet['L1'].font=ft
-
-fingerSheet['M1']= '外勤开始时间'
-fingerSheet['M1'].font=ft
-
-fingerSheet['N1']= '外勤结束时间'
-fingerSheet['N1'].font=ft
-
-fingerSheet['O1']= '加班开始时间'
-fingerSheet['O1'].font=ft
-
-fingerSheet['P1']= '加班结束时间'
-fingerSheet['P1'].font=ft
-
-fingerSheet['Q1']= '补卡开始时间'
-fingerSheet['Q1'].font=ft
-
-fingerSheet['R1']= '补卡结束时间'
-fingerSheet['R1'].font=ft
-
-fingerSheet.freeze_panes = 'F2'
-
-
-"""
